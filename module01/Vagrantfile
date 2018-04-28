@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# First module's Vagrantfile. For basics of Ansible, this is enough...
+
+Vagrant.configure("2") do |config|
+  
+  config.vm.define "inst01" do |inst01|
+    inst01.vm.box = "ubuntu/trusty64"
+    inst01.vm.hostname = "inst01"
+    inst01.vm.network :public_network, ip: "172.16.17.8"
+  end
+  
+  config.vm.define "inst02" do |inst02|
+    inst02.vm.box = "ubuntu/trusty64"
+    inst02.vm.hostname = "inst02"
+    inst02.vm.network :public_network, ip: "172.16.17.9"
+  end
+
+  config.vm.define "inst03" do |inst03|
+    inst03.vm.box = "ubuntu/trusty64"
+    inst03.vm.hostname = "inst03"
+    inst03.vm.network :public_network, ip: "172.16.17.10"
+  end
+end
