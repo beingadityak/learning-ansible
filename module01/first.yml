@@ -1,0 +1,9 @@
+---
+- hosts: vagrant
+  remote_user: vagrant
+  name: "Say Hello to the world of Ansible"
+  tasks:
+    - name: "Okay, say Hi!"
+      command: "echo \" Hello World! \" "
+      register: hello_output
+    - debug: msg = "{{hello_output.stdout}}"
