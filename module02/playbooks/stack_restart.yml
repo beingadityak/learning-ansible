@@ -19,6 +19,7 @@
 
   tasks:
     - service: name=mysql state=restarted
+      become: true
 
 - hosts: webserver
   gather_facts: true
