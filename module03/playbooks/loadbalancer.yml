@@ -2,18 +2,23 @@
 - hosts: loadbalancer
   gather_facts: true
   remote_user: vagrant
+  become: yes
 
   tasks:
+
+    - name: install required tools
+      apt: name={{item}} state=present update_cache=yes
+      with_items:
+        - python-httplib2
+
     - name: install nginx
       apt: name=nginx state=present update_cache=yes
-      become: yes
 
     - name: ensure nginx is started
       service: name=nginx state=started enabled=yes
 
     - name: configure load balancing
       template: src=../templates/nginx.conf.j2 dest=/etc/nginx/sites-available/demo mode=0644
-      become: true
       notify: restart nginx
 
     - name: deactivate default nginx site
@@ -21,15 +26,12 @@
       with_items:
         - sites-available/default
         - sites-enabled/default
-      become: true
       notify: restart nginx
 
     - name: activate demo load balancing
       file: src=/etc/nginx/sites-available/demo dest=/etc/nginx/sites-enabled/demo state=link
-      become: true
       notify: restart nginx
 
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
-      become: true
