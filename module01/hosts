@@ -1,4 +1,4 @@
 [vagrant]
-machine_1
-machine_2
-machine_3
+inst01  ansible_host=10.10.12.63
+inst02  ansible_host=10.10.12.64
+inst03  ansible_host=10.10.12.65
