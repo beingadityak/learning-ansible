@@ -1,5 +1,6 @@
 ---
 - hosts: vagrant
+  gather_facts: true
   remote_user: vagrant
   name: "Say Hello to the world of Ansible"
   tasks:
