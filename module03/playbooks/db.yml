@@ -1,0 +1,12 @@
+---
+- hosts: database
+  gather_facts: true
+  remote_user: vagrant
+
+  tasks:
+    - name: install MySQL Server
+      apt: name=mysql-server state=present update_cache=yes
+      become: yes
+
+    - name: ensure mysql is started
+      service: name=mysql state=started enabled=yes

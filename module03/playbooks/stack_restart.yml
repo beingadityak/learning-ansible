@@ -1,0 +1,36 @@
+---
+- hosts: loadbalancer
+  gather_facts: true
+  remote_user: vagrant
+
+  tasks:
+    - service: name=nginx state=stopped
+
+- hosts: webserver
+  gather_facts: true
+  remote_user: vagrant
+
+  tasks:
+    - service: name=apache2 state=stopped
+
+- hosts: database
+  gather_facts: true
+  remote_user: vagrant
+
+  tasks:
+    - service: name=mysql state=restarted
+      become: true
+
+- hosts: webserver
+  gather_facts: true
+  remote_user: vagrant
+
+  tasks:
+    - service: name=apache2 state=started
+
+- hosts: loadbalancer
+  gather_facts: true
+  remote_user: vagrant
+
+  tasks:
+    - service: name=nginx state=started

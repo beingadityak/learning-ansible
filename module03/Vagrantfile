@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Second module's Vagrantfile.
+
+Vagrant.configure("2") do |config|
+  config.ssh.forward_agent = true
+
+  config.vm.define "lb01" do |lb01|
+    lb01.vm.box = "ubuntu/trusty64"
+    lb01.vm.hostname = "lb01"
+    lb01.vm.network :private_network, ip: "10.10.12.63"
+    ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
+    config.vm.provision 'shell', inline: 'mkdir -p /root/.ssh'
+    config.vm.provision 'shell', inline: "echo #{ssh_pub_key} >> /root/.ssh/authorized_keys"
+    config.vm.provision 'shell', inline: "echo \"#{ssh_pub_key}\" >> /home/vagrant/.ssh/authorized_keys", privileged: false
+  end
+  
+  config.vm.define "web01" do |web01|
+    web01.vm.box = "ubuntu/trusty64"
+    web01.vm.hostname = "web01"
+    web01.vm.network :private_network, ip: "10.10.12.64"
+    ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
+    config.vm.provision 'shell', inline: 'mkdir -p /root/.ssh'
+    config.vm.provision 'shell', inline: "echo #{ssh_pub_key} >> /root/.ssh/authorized_keys"
+    config.vm.provision 'shell', inline: "echo \"#{ssh_pub_key}\" >> /home/vagrant/.ssh/authorized_keys", privileged: false
+  end
+
+  config.vm.define "web02" do |web02|
+    web02.vm.box = "ubuntu/trusty64"
+    web02.vm.hostname = "web02"
+    web02.vm.network :private_network, ip: "10.10.12.65"
+    ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
+    config.vm.provision 'shell', inline: 'mkdir -p /root/.ssh'
+    config.vm.provision 'shell', inline: "echo #{ssh_pub_key} >> /root/.ssh/authorized_keys"
+    config.vm.provision 'shell', inline: "echo \"#{ssh_pub_key}\" >> /home/vagrant/.ssh/authorized_keys", privileged: false
+  end
+  config.vm.define "db01" do |db01|
+    db01.vm.box = "ubuntu/trusty64"
+    db01.vm.hostname = "db01"
+    db01.vm.network :private_network, ip: "10.10.12.66"
+    ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
+    config.vm.provision 'shell', inline: 'mkdir -p /root/.ssh'
+    config.vm.provision 'shell', inline: "echo #{ssh_pub_key} >> /root/.ssh/authorized_keys"
+    config.vm.provision 'shell', inline: "echo \"#{ssh_pub_key}\" >> /home/vagrant/.ssh/authorized_keys", privileged: false
+  end
+end

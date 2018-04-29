@@ -1,0 +1,12 @@
+---
+- hosts: loadbalancer
+  gather_facts: true
+  remote_user: vagrant
+
+  tasks:
+    - name: install nginx
+      apt: name=nginx state=present update_cache=yes
+      become: yes
+
+    - name: ensure nginx is started
+      service: name=nginx state=started enabled=yes
