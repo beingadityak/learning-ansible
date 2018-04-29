@@ -10,3 +10,26 @@
 
     - name: ensure nginx is started
       service: name=nginx state=started enabled=yes
+
+    - name: configure load balancing
+      template: src=../templates/nginx.conf.j2 dest=/etc/nginx/sites-available/demo mode=0644
+      become: true
+      notify: restart nginx
+
+    - name: deactivate default nginx site
+      file: path=/etc/nginx/{{item}} state=absent
+      with_items:
+        - sites-available/default
+        - sites-enabled/default
+      become: true
+      notify: restart nginx
+
+    - name: activate demo load balancing
+      file: src=/etc/nginx/sites-available/demo dest=/etc/nginx/sites-enabled/demo state=link
+      become: true
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+      become: true

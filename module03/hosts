@@ -1,9 +1,9 @@
 [loadbalancer]
-lb01  ansible_host=10.10.12.63
+10.10.12.63
 
 [webserver]
-web01  ansible_host=10.10.12.64
-web02  ansible_host=10.10.12.65
+10.10.12.64
+10.10.12.65
 
 [database]
-db01  ansible_host=10.10.12.66
+10.10.12.66
