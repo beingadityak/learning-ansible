@@ -1,0 +1,34 @@
+---
+
+- hosts: loadbalancer
+  gather_facts: true
+  remote_user: vagrant
+  become: yes
+  tasks:
+    - name: verify nginx status
+      command: service nginx status
+    
+    - name: ensure that nginx is listening on 80
+      wait_for: port=80 timeout=1
+
+- hosts: webserver
+  gather_facts: true
+  remote_user: vagrant
+  become: yes
+  tasks:
+    - name: verify apache2 status
+      command: service apache2 status
+
+    - name: ensure that apache2 is listening on 80
+      wait_for: port=80 timeout=1
+
+- hosts: database
+  gather_facts: true
+  remote_user: vagrant
+  become: yes
+  tasks:
+    - name: verify mysql server status
+      command: service mysql status
+
+    - name: ensure that mysql is listening on 3306
+      wait_for: port=3306 timeout=1
