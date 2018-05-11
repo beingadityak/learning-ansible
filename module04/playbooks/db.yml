@@ -4,30 +4,5 @@
   remote_user: vagrant
   become: yes
 
-  tasks:
-
-    - name: install required tools
-      apt: name={{item}} state=present update_cache=yes
-      with_items:
-        - python-mysqldb
-
-    - name: install MySQL Server
-      apt: name=mysql-server state=present update_cache=yes
-
-    - name: ensure mysql is started
-      service: name=mysql state=started enabled=yes
-
-    - name: mysql will listen to all ports
-      lineinfile: dest=/etc/mysql/my.cnf regexp=^bind-address
-                  line="bind-address = 0.0.0.0"
-      notify: restart mysql-server
-
-    - name: create a demo database
-      mysql_db: name=demo state=present
-
-    - name: create a demo user
-      mysql_user: name=demo password=demo priv=demo.*:ALL host='%' state=present
-
-  handlers:
-    - name: restart mysql-server
-      service: name=mysql state=restarted
+  roles:
+    - { role: mysql, db_name: demo, db_user_name: demo, db_user_pass: demo, db_user_host: '%' }

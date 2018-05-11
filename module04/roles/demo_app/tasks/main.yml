@@ -1,2 +1,25 @@
 ---
 # tasks file for demo_app
+
+- name: install packages required for demo application
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - python-pip
+    - python-virtualenv
+    - python-mysqldb
+
+- name: copy demo app source code
+  copy: src=../demo/app/ dest=/var/www/demo mode=0775
+  notify: restart apache2
+
+- name: copy demo.conf file
+  copy: src=../demo/demo.conf dest=/etc/apache2/sites-available mode=0775
+  notify: restart apache2
+
+- name: setup virtualenv
+  pip: requirements=/var/www/demo/requirements.txt virtualenv=/var/www/demo/.venv
+  notify: restart apache2
+
+- name: activate demo site
+  file: src=/etc/apache2/sites-available/demo.conf dest=/etc/apache2/sites-enabled/demo.conf state=link
+  notify: restart apache2

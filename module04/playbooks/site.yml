@@ -1,0 +1,7 @@
+---
+
+# The Site-wide setup of everything
+
+- include: db.yml
+- include: web.yml
+- include: loadbalancer.yml
